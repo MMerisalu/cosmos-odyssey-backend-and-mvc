@@ -1,0 +1,266 @@
+@model WebApp.ViewModels.CreateReservationViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Reservation</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="SelectedPriceListId" />
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="From" class="control-label"></label>
+                <select asp-for="From" class="form-control" asp-items="Model.FromOptions">
+                    <option>Please Select</option>
+                </select>
+                <span asp-validation-for="From" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="SelectedLegIds"/>
+            
+            @if (Model.SelectedLegs?.Any() == true)
+            {
+                <h2>Selected Flights</h2>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.Company)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.RouteInfo!.From)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.RouteInfo!.To)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.Price)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.FlightStart)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.FlightEnd)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.TravelTime)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.RouteInfo!.Distance)
+                        </th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model.SelectedLegs)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Company!.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RouteInfo!.From)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RouteInfo!.To)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FlightStart)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FlightEnd)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TravelTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RouteInfo!.Distance)
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+                @if (Model.IsGetLegsVisible)
+                {
+                
+                    <div class="form-group">
+                        <input type="submit" value="Remove Last Flight" asp-action="RemoveLastLeg" class="btn btn-secondary"/>
+                        <input type="submit" value="Add Flight" asp-action="GetLegs" class="btn btn-primary"/>
+                    </div>
+                
+                }
+
+            }
+            else
+            {
+                @if (Model.IsGetLegsVisible)
+                {
+                    <p><i>No flights have been selected yet!</i></p>
+                    <input type="submit" value="Add Flight" asp-action="GetLegs" class="btn btn-primary"/>
+                }
+            }
+            
+            @if (!Model.IsGetLegsVisible)
+            {
+                <h2>Flights to Choose From</h2>
+                <div class="form-group">
+                    <label asp-for="CompanySearch">Search Company:</label>
+                    <input type="text" asp-for="CompanySearch" />
+                    
+                    <label asp-for="SelectedSortOption" class="control-label">Sort:</label>
+                    <select asp-for="SelectedSortOption" class="form-control" asp-items="Model.SortOptions">
+                    </select>
+                    
+                    <label asp-for="SelectedLegToOption" class="control-label">Destination:</label>
+                    <select asp-for="SelectedLegToOption" class="form-control" asp-items="Model.LegToOptions">
+                    </select>
+                    
+                    <input type="submit" value="Apply" asp-action="GetLegs" class="btn btn-outline-primary"/>
+                </div>
+                @if (Model.Providers?.Any() == true)
+                {
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.Company)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.RouteInfo!.From)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.RouteInfo!.To)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.Price)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.FlightStart)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.FlightEnd)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.TravelTime)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.RouteInfo!.Distance)
+                            </th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in Model.Providers)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Company!.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RouteInfo!.From)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RouteInfo!.To)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FlightStart)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FlightEnd)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TravelTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RouteInfo!.Distance)
+                                </td>
+                                <td>
+                                    <input type="submit" value="Select" asp-action="AddLeg" asp-route-id="@item.Id" class="btn btn-secondary"/>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <h3>No flights match your search</h3>
+                }
+                <div class="form-group">
+                    <input type="submit" value="Cancel Flight Selection" asp-action="CancelSelectLeg" class="btn btn-outline-secondary"/>
+                </div>
+            }
+        
+            @*<div class="form-group">
+                <label asp-for="From" class="control-label"></label>
+                <select asp-for="From" class="form-control">
+                    <option>Please Select</option>
+                </select>
+                <span asp-validation-for="From" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="To" class="control-label"></label>
+                <input asp-for="To" class="form-control" disabled="disabled" />
+            </div>
+            @*<div class="form-group">
+                <label asp-for="To" class="control-label"></label>
+                <input asp-for="To" class="form-control" />
+                <span asp-validation-for="To" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="TotalQuotedPrice" class="control-label"></label>
+                <input asp-for="TotalQuotedPrice" class="form-control" disabled="disabled" />
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalDistance" class="control-label"></label>
+                <input asp-for="TotalDistance" class="form-control" disabled="disabled" />
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalTravelTime" class="control-label"></label>
+                <input asp-for="TotalTravelTime" class="form-control" disabled="disabled" />
+            </div>
+            
+            @if (Model.IsSubmitVisible)
+            {
+                <div class="form-group">
+                    <input type="submit" value="Create" asp-action="Create" class="btn btn-primary" />
+                </div>
+            }
+            
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

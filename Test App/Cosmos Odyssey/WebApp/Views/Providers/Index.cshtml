@@ -1,0 +1,77 @@
+@using WebApp.Helpers
+@model WebApp.ViewModels.IndexProviderViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+    <form action="@Url.Action("FilteringByCompanyNameView")" method="post">
+        <input type="text" name="search"/>
+        <input type="submit" value="Search"/>
+    </form>
+
+    
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.Company)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.RouteInfo!.From)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.RouteInfo!.To)
+        </th>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.Price)
+        </th>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.FlightStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.FlightEnd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Providers!.FirstOrDefault()!.TravelTime)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Providers!)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Company!.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RouteInfo!.From)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RouteInfo!.To)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlightStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlightEnd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TravelTime)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

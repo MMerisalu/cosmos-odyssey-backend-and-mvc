@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  cosmos-odyssey-app:
+    container_name: "cosmos-odyssey-mssql-app"
+    build:
+      dockerfile: "./Dockerfile"
+    ports:
+      # external:internal
+      - "8000:80"
+  
+    environment:
+      - ConnectionStrings:"Server=cosmos-odyssey-mssql,1433;Database=CosmosOdysseyDb;User=sa;Password=Hobujaama10;Encrypt=true;TrustServerCertificate=True"
+        
+    
+  mssql:
+    container_name: "cosmos-odyssey-mssql"
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    restart: on-failure
+    ports:
+      - "1433:1433"
+    
+    environment:
+      - ACCEPT_EULA=1
+      - MSSQL_USER=SA
+      - MSSQL_SA_PASSWORD=Hobujaama10
+    
+    volumes:
+      - cosmosodyssey-volume:/var/lib/mssql/data
+
+volumes:
+  cosmosodyssey-volume:
+
+  
+
+      
